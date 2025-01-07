@@ -1,3 +1,4 @@
+---
 name: Run zenload for 5 seconds
 author: Stefan Aeschbacher
 architecture: linux
@@ -6,8 +7,8 @@ services:
     build:
       context: .
       target: final
- 
- flow:
+
+flow:
   - name: CPU-Load
     container: zenload-container
     commands:
