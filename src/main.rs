@@ -1,3 +1,4 @@
+use clap::Parser;
 use std::thread;
 use std::env;
 use std::time::{Duration, Instant};
@@ -5,7 +6,30 @@ use std::fs::{OpenOptions};
 use std::io::{Write};
 use rand::Rng;
 
-fn cpu_test(duration: u64) {
+#[derive(Parser, Debug)]
+struct Args {
+    #[clap(short, long)]
+    verbose: bool,
+    #[clap(short, long, default_value = "5")]
+    cpu_secs: u64,
+}
+
+#[derive(Debug)]
+struct Config {
+    verbose: bool,
+    cpu_secs: u64,
+}
+
+impl From<Args> for Config {
+    fn from(args: Args) -> Self {
+        Config {
+            verbose: args.verbose,
+            cpu_secs: args.cpu_secs,
+        }
+    }
+}
+
+fn cpu_test(config: Config, duration: u64) {
     if duration == 0 {
         return
     }
@@ -22,7 +46,9 @@ fn cpu_test(duration: u64) {
             iterations += 1;
             let _a = s + 1; // make sure s gets not optimized away
         }
-        println!("Iterations done, {:?}", iteration_start.elapsed());
+        if config.verbose {
+            println!("Iterations done, {:?}", iteration_start.elapsed());
+        }
 
         // Sleep to ensure constant workload
         let elapsed = iteration_start.elapsed();
@@ -98,9 +124,12 @@ fn gpu_test(duration: u64) {
 }
 
 fn main() {
+    let args = Args::parse();
+    let config: Config = args.into();
+
     let args: Vec<String> = env::args().collect();
 
-    let cpu_duration = args.get(1).and_then(|v| v.parse::<u64>().ok()).unwrap_or(5);
+    let cpu_duration = config.cpu_secs;
     let disk_duration = 0; // seconds
     let ram_duration = 0; // seconds
     let gpu_duration = 0; // seconds
@@ -109,7 +138,7 @@ fn main() {
     println!("Starting load scenario...");
 
     println!("Running CPU test for {} seconds", cpu_duration);
-    cpu_test(cpu_duration);
+    cpu_test(config, cpu_duration);
 
     println!("Running Disk I/O test...");
     disk_io_test("testfile.tmp", disk_duration);
