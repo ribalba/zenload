@@ -1,6 +1,7 @@
 ---
-name: Run zenload for 5 seconds
+name: Run zenload
 author: Stefan Aeschbacher
+description: runs zenload for 5 seconds with a cpu test
 architecture: linux
 services:
   zenload-container:
@@ -13,5 +14,5 @@ flow:
     container: zenload-container
     commands:
       - type: console
-        command: zenload
+        command: zenload -v -c 5
         note: Starting zenload
