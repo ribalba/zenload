@@ -49,8 +49,8 @@ RUN --mount=type=bind,source=src,target=src \
     <<EOF
 set -e
 xx-cargo build --locked --release --target-dir ./target
-cp ./target/$(xx-cargo --print-target-triple)/release/$APP_NAME /bin/zenload
-xx-verify /bin/zenload
+cp ./target/$(xx-cargo --print-target-triple)/release/$APP_NAME /tmp/zenload
+xx-verify /tmp/zenload
 EOF
 
 ################################################################################
@@ -79,7 +79,7 @@ RUN adduser \
 USER appuser
 
 # Copy the executable from the "build" stage.
-COPY --from=build /bin/zenload /bin/
+COPY --from=build /tmp/zenload /bin/
 
 # Expose the port that the application listens on.
 EXPOSE 1024
