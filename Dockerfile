@@ -19,7 +19,8 @@ ARG APP_NAME
 WORKDIR /app
 
 # Copy cross compilation utilities from the xx stage.
-COPY --from=xx / /
+# originally copied from / to / but Kaniko does not seem to like copying the root
+COPY --from=xx /usr/bin/ /usr/bin/
 
 # Install host build dependencies.
 RUN apk add --no-cache clang lld musl-dev git file
