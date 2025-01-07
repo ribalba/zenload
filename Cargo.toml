@@ -1,5 +1,5 @@
 [package]
-name = "load-scenario-tester"
+name = "zenload"
 version = "0.1.0"
 edition = "2021"
 

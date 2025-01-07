@@ -84,4 +84,4 @@ COPY --from=build /bin/zenload /bin/
 EXPOSE 1024
 
 # What the container should run when it is started.
-CMD ["/bin/zenload"]
+# CMD ["/bin/zenload"]

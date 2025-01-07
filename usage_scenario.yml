@@ -1,0 +1,16 @@
+name: Run zenload for 5 seconds
+author: Stefan Aeschbacher
+architecture: linux
+services:
+  zenload-container:
+    build:
+      context: .
+      target: final
+ 
+ flow:
+  - name: CPU-Load
+    container: zenload-container
+    commands:
+      - type: console
+        command: zenload
+        note: Starting zenload
