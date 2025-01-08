@@ -2,7 +2,7 @@
 name: Run zenload
 author: Stefan Aeschbacher
 description: runs zenload for 5 seconds with a cpu test
-architecture: linux
+#architecture: linux
 services:
   zenload-container:
     build:
